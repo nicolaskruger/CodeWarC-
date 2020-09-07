@@ -13,8 +13,8 @@ namespace codeWar
         public static int sumTwoSmallestNumbers(params int[] numbers)
 	    {
 	    	//Code here...
-            var li = numbers.OrderBy(n=>n).ToArray();
-            return li[0]+li[1];
+            return numbers.OrderBy(i => i).Take(2).Sum();
+;
 	    }
         static void Main(string[] args)
         {
