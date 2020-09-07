@@ -1,29 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace codeWar
 {
     class Program
     {
-        public static int SomaString(string str){
-            int soma = 0;
-            for (int i = 0; i < str.Length; i++)
-            {
-                soma+=int.Parse(str[i].ToString());
-            }
-            return soma;
-        }
-         public static int DigitalRoot(long n)
+        public static int DuplicateCount(string str)
         {
-          // Your awesome code here!
-          int val= SomaString(n.ToString());
-          if(val>9){
-              return DigitalRoot(val);
-          }
-          return val;
+            str= str.ToLower();
+            Dictionary<char,int> dic= new Dictionary<char, int>();
+            char ch;
+            for (int i=0;i<str.Length;i++)
+            {
+                ch = str[i];
+                try
+                {
+                    dic[ch]+=1;
+                }
+                catch (System.Exception)
+                {
+                    
+                    dic[ch]=1;
+                }
+            }
+            int cont = 0;
+            var cha=dic.Keys;
+            foreach (var c in cha)
+            {
+                if(dic[c]>=2){
+                    cont++;
+                }
+            }
+            return cont;
         }
         static void Main(string[] args)
         {
-            DigitalRoot(111111);
+            int n= DuplicateCount("aabBcde");
+            Console.WriteLine(n);
         }
     }
 }
