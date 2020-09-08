@@ -17,15 +17,8 @@ namespace codeWar
         }
         public static char FindMissingLetter(char[] array)
         {
-          var combo = from a in array
-                      from b in array
-                      select new{
-                          a,
-                          b
-                      };
-          combo=  combo.Where((c)=>((c.a<c.b)&&c.a==(c.b-1)));
-            combo.ToArray().print();
-          return ' ';
+          IEnumerable<int> emu=  Enumerable.Range(array[0],25);
+          return (char)Enumerable.Range(array[0], 25).First(x => !array.Contains((char)x));
         }
         static void Main(string[] args)
         {
