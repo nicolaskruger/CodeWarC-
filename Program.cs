@@ -17,10 +17,19 @@ namespace codeWar
             char[] ss= s1.OrderBy(c=>c).Distinct().ToArray();
             return string.Join("",ss);
         }
+        public static char FindMissingLetter(char[] array)
+        {
+          for (int i = 0; i < array.Length; i++)
+          {
+              if(array[i]!=(array[i+1]-1)){
+                  return (char)(array[i]+1);
+              }
+          }
+          return ' ';
+        }
         static void Main(string[] args)
         {
-            string st = Longest("xyaabbbccccdefww","xxxxyyyyabklmopq");
-            System.Console.WriteLine(st);
+            System.Console.WriteLine(FindMissingLetter(new [] { 'a','b','c','d','f' }));
         }
     }
 }
