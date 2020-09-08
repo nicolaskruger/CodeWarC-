@@ -36,9 +36,34 @@ namespace codeWar
             return true;
             
         }
+        public static int MaxSequence(int[] arr) 
+        { 
+          //TODO : create code
+          if(arr.Length==0) return 0;
+          int maxSr= arr[0];
+          int max = arr[0];
+            for (int i = 1; i < arr.Length; i++)
+            {
+                if(maxSr+arr[i]>arr[i]){
+                    maxSr=maxSr+arr[i];
+                }else{
+                    maxSr=arr[i];
+                }
+                if(maxSr>max){
+                    max=maxSr;
+                }
+            }
+            return max;
+        }
+        public static string AlphabetPosition(string text)
+        {
+          text=text.ToLower();
+          text= string.Join("",text.Where(text=> text>='a'&& text<='z').ToArray());
+          return string.Join(" ",text.Select(text=>text-'a'+1).ToArray());  
+        }
         static void Main(string[] args)
         {
-            System.Console.WriteLine(cleanTheString("aaaaaaaaaaaaaaaaaaaaaaaaaa)(((("));
+            System.Console.WriteLine(AlphabetPosition("The sunset sets at twelve o' clock."));
         }
     }
 }
