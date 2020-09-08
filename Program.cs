@@ -20,9 +20,25 @@ namespace codeWar
           IEnumerable<int> emu=  Enumerable.Range(array[0],25);
           return (char)Enumerable.Range(array[0], 25).First(x => !array.Contains((char)x));
         }
+        public static string cleanTheString(string str){
+            return string.Join("",str.Where(s=> s=='('||s==')').ToArray());
+        }
+        public static bool ValidParentheses(string input)
+        {
+            // Your code here
+            input = cleanTheString(input);
+            while(input!=""){
+                string after=input;
+                input= input.Replace("()","");
+                System.Console.WriteLine(input);
+                if(after==input) return false;
+            }
+            return true;
+            
+        }
         static void Main(string[] args)
         {
-            System.Console.WriteLine(FindMissingLetter(new [] { 'a','b','c','d','f' }));
+            System.Console.WriteLine(cleanTheString("aaaaaaaaaaaaaaaaaaaaaaaaaa)(((("));
         }
     }
 }
