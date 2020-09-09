@@ -61,9 +61,26 @@ namespace codeWar
           text= string.Join("",text.Where(text=> text>='a'&& text<='z').ToArray());
           return string.Join(" ",text.Select(text=>text-'a'+1).ToArray());  
         }
+        public static long pot(long n){
+            long[] arr= Array.ConvertAll(n.ToString().Select(n=>n).ToArray(),s=>long.Parse(s.ToString()));
+            long soma=0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                soma+=(long)Math.Pow(arr[i],i+1);
+            }
+            return soma;
+        }
+        public static long[] SumDigPow(long a, long b) 
+        {
+            // your code
+            long[] squares = Array.ConvertAll(Enumerable.Range((int)a, (int)(b-a)).ToArray(),s=>(long)s);
+            squares= squares.Where(s=>s==pot(s)).ToArray();
+            return squares;
+
+        }
         static void Main(string[] args)
         {
-            System.Console.WriteLine(AlphabetPosition("The sunset sets at twelve o' clock."));
+            SumDigPow(90, 100).print();
         }
     }
 }
