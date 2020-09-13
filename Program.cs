@@ -178,10 +178,39 @@ namespace codeWar
             var s2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             return string.Join("", input.Select(x => char.IsLetter(x)?s1[s2.IndexOf(x)]:x));
         }
+        static Dictionary<char,char[]> Allpos = new Dictionary<char, char[]>{
+            {'1',new char[]{'1','2','4'}},
+            {'2',new char[]{'1','2','3','5'}},
+            {'3',new char[]{'2','3','6'}},
+            {'4',new char[]{'1','4','5','7'}},
+            {'5',new char[]{'2','4','5','6','8'}},
+            {'6',new char[]{'3','5','6','9'}},
+            {'7',new char[]{'4','7','8'}},
+            {'8',new char[]{'5','7','8','9','0'}},
+            {'9',new char[]{'6','8','9'}},
+            {'0',new char[]{'8','0'}}
+        };
+        public static char[] getAllpossibilits(char c){
+            return Allpos[c];
+        }
+        public static List<string> GetPINs(string observed)
+        {
+            string[] AllPos=new string[]{
+                ""
+            };
+            char[]ch= observed.Select(x=>x).ToArray();
+            foreach (var c in ch)
+            {
+                char[] cha = getAllpossibilits(c);
+                AllPos=  (from a in AllPos
+                        from cc in cha
+                        select a + cc.ToString()).Distinct().ToArray();
+            }
+            return AllPos.ToList();
+        }
         static void Main(string[] args)
         {
-            System.Console.WriteLine(Rot13("EBG13 rknzcyr."));
-            // v.print();
+           GetPINs("111").print();
         }
     }
 }
