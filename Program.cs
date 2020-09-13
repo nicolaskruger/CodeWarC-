@@ -174,7 +174,9 @@ namespace codeWar
         }
         public static string Rot13(string input)
         {
-            return string.Join("",input.Select(s=>toR13(s)).ToArray());
+            var s1 = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
+            var s2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            return string.Join("", input.Select(x => char.IsLetter(x)?s1[s2.IndexOf(x)]:x));
         }
         static void Main(string[] args)
         {
