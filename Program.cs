@@ -78,9 +78,93 @@ namespace codeWar
             return squares;
 
         }
+        public static int fact(int n){
+            if(n==0){
+                return 1;
+            }
+            return n*fact(n-1);
+        }
+        public static int TrailingZeros(int n)
+        {
+          n =fact(n);
+          bool zero=false;
+          int cont=0;
+          foreach (var c in n.ToString())
+          {
+              if(c=='0'){
+                  if(!zero){
+                      cont++;
+                  }
+                  zero=true;
+              }
+              else{
+                  zero=false;
+              }
+          }
+          return cont;
+        }
+        public static void print<T>(this IEnumerable<T> lis){
+            foreach (var l in lis)
+            {
+                System.Console.WriteLine(l);
+            }
+        }
+        public static Dictionary<int,int> Factor(int number) {
+            int div=2;
+            Dictionary<int,int> dic =new Dictionary<int, int>();
+            while (number!=1)
+            {
+                if(number%div==0){
+                    number/=div;
+                    try
+                    {
+                        dic[div]+=1;
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        dic[div]=1;
+                    }
+                }else{
+                    div++;
+                }
+            }
+            return dic;
+        }
+        static int GCD(int[] numbers)
+        {
+            return numbers.Aggregate(GCD);
+        }
+
+        static int GCD(int a, int b)
+        {
+            return b == 0 ? a : GCD(b, a % b);
+        }
+        public static (int, int)? IsPerfectPower(int n)
+        {
+            Dictionary<int,int> fac= Factor(n);
+            if(fac.Count>1){
+                int gcd = GCD(fac.Values.ToArray());
+                if(gcd==1) return null;
+                var elev= fac.Select((s)=> (int)Math.Pow(s.Key,s.Value/gcd)).Aggregate(1,(x,y) => x*y);
+                return (elev,gcd);
+                // int[] elev= fac.Values.Select(s=>s/gcd).ToArray();
+            }else{
+                if(fac.Values.First()==1) return null;
+                return (fac.Keys.First(),fac.Values.First());
+            }
+            return null;
+        }
         static void Main(string[] args)
         {
-            SumDigPow(90, 100).print();
+            int[] n = new int[]{
+                2,4,8
+            };
+            // System.Console.WriteLine(GCD(n));
+            int modValue = n.Aggregate(1, (x,y) => x * y);
+            System.Console.WriteLine(IsPerfectPower(1764));
+            Factor(1764).print();
+            // v.print();
         }
     }
 }
