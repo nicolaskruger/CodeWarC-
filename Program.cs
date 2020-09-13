@@ -155,15 +155,30 @@ namespace codeWar
             }
             return null;
         }
+        public static char toR13(char l){
+            char[] bgl = new char[]{
+                'A','a'
+            };
+            char[] endl = new char[]{
+                'Z','z'
+            };
+            char[] midl = new char[]{
+                'M','m'
+            };
+            int i =0;
+            if(l>=bgl[0]&&l<=endl[0]) i=0;
+            else if(l>=bgl[1]&&l<=endl[1]) i=1;
+            else return l;
+            if(l>midl[i]) return (char)(l-13);
+            else return (char)(l+13);
+        }
+        public static string Rot13(string input)
+        {
+            return string.Join("",input.Select(s=>toR13(s)).ToArray());
+        }
         static void Main(string[] args)
         {
-            int[] n = new int[]{
-                2,4,8
-            };
-            // System.Console.WriteLine(GCD(n));
-            int modValue = n.Aggregate(1, (x,y) => x * y);
-            System.Console.WriteLine(IsPerfectPower(1764));
-            Factor(1764).print();
+            System.Console.WriteLine(Rot13("EBG13 rknzcyr."));
             // v.print();
         }
     }
