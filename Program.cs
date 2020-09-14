@@ -208,9 +208,59 @@ namespace codeWar
             }
             return AllPos.ToList();
         }
+    public static Dictionary<string,string> morse = new Dictionary<string, string>(){
+            {".-.-.-","."},
+            {"-.-.--","!"},
+            {"",""},
+            {"...---...","SOS"},
+            {".-","A"},
+            {"-...","B"},
+            {"-.-.","C"},
+            {"-..","D"},
+            {".","E"},
+            {"..-.","F"},
+            {"--.","G"},
+            {"....","H"},
+            {"..","I"},
+            {".---","J"},
+            {"-.-","K"},
+            {".-..","L"},
+            {"--","M"},
+            {"-.","N"},
+            {"---","O"},
+            {".--.","P"},
+            {"--.-","Q"},
+            {".-.","R"},
+            {"...","S"},
+            {"-","T"},
+            {"..-","U"},
+            {"...-","V"},
+            {".--","W"},
+            {"-..-","X"},
+            {"-.--","Y"},
+            {"--..","Z"},
+            {".----","1"},
+            {"..---","2"},
+            {"...--","3"},
+            {"....-","4"},
+            {".....","5"},
+            {"-....","6"},
+            {"--...","7"},
+            {"---..","8"},
+            {"----.","9"},
+            {"-----","0"}
+        };
+        public static string decodeWord(string str){
+            string[] st =str.Split(" ");
+            return string.Join("",st.Select(s=>morse[s]));
+        }
+        public static string Decode(string morseCode)
+	    {
+	    	return string.Join(" ",morseCode.Split("   ").Select(s=>decodeWord(s)).Where(s=>s!="")); 
+	    }
         static void Main(string[] args)
         {
-           GetPINs("111").print();
+           System.Console.WriteLine(Decode(".... . -.--   .--- ..- -.. ."));
         }
     }
 }
