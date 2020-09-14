@@ -258,9 +258,32 @@ namespace codeWar
 	    {
 	    	return string.Join(" ",morseCode.Split("   ").Select(s=>decodeWord(s)).Where(s=>s!="")); 
 	    }
+        public static int dec(ref long num){
+            int subNum=(int)num;
+            int m= Enumerable.Range(1,(int)num).Where(s => s*s<=subNum).Last();
+            num=num-m*m;
+            return m; 
+        }
+        public static string decompose(long n) {
+            List<int> l= new List<int>();
+            int m=0;
+            n=n*n-1;
+            m = dec(ref n);
+            l.Add(m);
+            n+=1;
+            while(n>0){
+                m = dec(ref n);
+                l.Add(m);
+                if(n==0){
+                    if( l.GroupBy(s =>s).Select(s => s.Count()).Where(s => s>1).ToArray().Length >0) return "Nothing";
+                    return string.Join(" ",l.OrderBy(s => s).Select(s => s.ToString()).ToArray());
+                }
+            }
+            return "Nothing";
+        }
         static void Main(string[] args)
         {
-           System.Console.WriteLine(Decode(".... . -.--   .--- ..- -.. ."));
+           System.Console.WriteLine(decompose(4));;
         }
     }
 }
