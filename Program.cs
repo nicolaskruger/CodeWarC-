@@ -275,15 +275,23 @@ namespace codeWar
                 m = dec(ref n);
                 l.Add(m);
                 if(n==0){
-                    if( l.GroupBy(s =>s).Select(s => s.Count()).Where(s => s>1).ToArray().Length >0) return "Nothing";
+                    if(l.GroupBy(s =>s).Select(s => s.Count()).Where(s => s>1).ToArray().Length >0) return "Nothing";
                     return string.Join(" ",l.OrderBy(s => s).Select(s => s.ToString()).ToArray());
                 }
             }
             return "Nothing";
         }
+        public static int[] ArrayDiff(int[] a, int[] b)
+        {
+            int[] intesect = a.Intersect(b).ToArray();
+            int[] c= a.Where(s => !intesect.Contains(s)).ToArray();
+            c.Concat(b.Where(s => !intesect.Contains(s)).ToArray());
+            c= c.OrderBy(c =>c).ToArray();
+            return c;
+        }
         static void Main(string[] args)
         {
-           System.Console.WriteLine(decompose(4));;
+           ArrayDiff(new int[] {1, 2, 2}, new int[] {}).print();
         }
     }
 }
