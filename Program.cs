@@ -283,11 +283,7 @@ namespace codeWar
         }
         public static int[] ArrayDiff(int[] a, int[] b)
         {
-            int[] intesect = a.Intersect(b).ToArray();
-            int[] c= a.Where(s => !intesect.Contains(s)).ToArray();
-            c.Concat(b.Where(s => !intesect.Contains(s)).ToArray());
-            c= c.OrderBy(c =>c).ToArray();
-            return c;
+            return a.Where(n => !b.Contains(n)).ToArray();
         }
         static void Main(string[] args)
         {
