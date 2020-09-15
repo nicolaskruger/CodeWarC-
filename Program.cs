@@ -336,9 +336,20 @@ namespace codeWar
         {
             return string.Join("\n",text.Split("\n").Select(c => splitBy(c,commentSymbols)));
         }
+        public static string UInt32ToIP(uint ip)
+        {
+          uint mask = (1<<8)-1;
+          List<string> list = new List<string>();
+          for (int i = 3; i >= 0; i--)
+          {
+              uint n = (ip>>((i)*8))&mask;
+              list.Add(n.ToString());
+          }
+          return string.Join(".",list);
+        }
         static void Main(string[] args)
         {
-           System.Console.WriteLine(StripComments("apples, pears # and bananas\ngrapes\nbananas !apples", new [] { "#", "!" }));
+           System.Console.WriteLine(UInt32ToIP(2154959208));
         }
     }
 }
