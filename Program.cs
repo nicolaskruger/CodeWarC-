@@ -285,9 +285,55 @@ namespace codeWar
         {
             return a.Where(n => !b.Contains(n)).ToArray();
         }
+        public static int Teste(int number) => number >= 10000000 ? -1 : Convert.ToInt32(new string(number.ToString().OrderByDescending(x => x).ToArray()));
+        public static void swap<T>(this T[] lis,int posI,int posF ){
+            T val = lis[posI];
+            lis[posI]=lis[posF];
+            lis[posF]=val;
+        }
+        public static long NextSmaller(long n)
+        {
+          string N = n.ToString();
+          for (int i = N.Length-1; i > 0; i--)
+          {
+              char[] m =N.ToArray();   
+              for (int j = 1; j <= i; j++)
+              {
+                
+                m.swap(i-j+1,i-j);
+                string str= string.Join("",m);
+                long num=long.Parse(str);
+                if(num<n&&str[0]!='0'){
+                    return num;
+                }    
+              }
+              
+          }
+          return -1;
+        }
+       public static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
+        {
+            if (length == 1) return list.Select(t => new T[] { t });
+
+            return GetPermutations(list, length - 1)
+                .SelectMany(t => list.Where(e => !t.Contains(e)),
+                    (t1, t2) => t1.Concat(new T[] { t2 }));
+        }
         static void Main(string[] args)
         {
-           ArrayDiff(new int[] {1, 2, 2}, new int[] {}).print();
+            // int[]n= new int[]{
+            //     1,2
+            // };
+            // n.swap(0,1);
+            // n.print();
+            int n= 1234;
+            var ch =n.ToString().ToArray();
+            var val = GetPermutations(ch,ch.Length).Where(c =>c.ToArray()[0]!='0').
+                        Select(c =>long.Parse(string.Join("",c.ToArray()))).
+                        OrderBy(c => c).First();
+            System.Console.WriteLine(val);;
+            
+        //    System.Console.WriteLine(NextSmaller(907));
         }
     }
 }
