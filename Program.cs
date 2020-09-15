@@ -319,17 +319,26 @@ namespace codeWar
             return -1;
             
         }
-     
+        public static string splitBy(string text, string[] commentSymbols){
+            try
+            {
+                int index= commentSymbols.Select(c =>text.IndexOf(c)).Where(c => c!=-1).OrderBy(c => c).First();
+                return text.Substring(0,index).TrimEnd();    
+            }
+            catch (System.Exception)
+            {
+                
+                return text.TrimEnd();
+            }
+            
+        }
+        public static string StripComments(string text, string[] commentSymbols)
+        {
+            return string.Join("\n",text.Split("\n").Select(c => splitBy(c,commentSymbols)));
+        }
         static void Main(string[] args)
         {
-            // int[]n= new int[]{
-            //     1,2
-            // };
-            // n.swap(0,1);
-            // n.print();
-            
-            
-           System.Console.WriteLine(NextSmaller(531));
+           System.Console.WriteLine(StripComments("apples, pears # and bananas\ngrapes\nbananas !apples", new [] { "#", "!" }));
         }
     }
 }
