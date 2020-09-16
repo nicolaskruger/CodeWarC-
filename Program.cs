@@ -360,19 +360,32 @@ namespace codeWar
             } 
             return dic;
         }
-        public static string sumOfDivided(int[] lst) {
-            Dictionary<int,int> prim = todosOsPrimos(lst.OrderBy(c => c).Last());
-            foreach (var l in lst)
+        public static int lDiv(this int n){
+            for (int i = n-1; i >0; i--)
             {
-                prim =
-                prim.ToDictionary(k => k.Key,k => {
-                    if(l%k.Key==0&&l!=k.Key){
-                        return k.Value+l/k.Key;
-                    }
-                    return k.Value;
-                });
-            } 
-            return string.Join("",prim.Where(k =>k.Value!=0).OrderBy(k=>k.Key).Select(k => $"({k.Key} {k.Key*k.Value})"));
+                if(n%i==0)return i;
+            }
+            return 0;
+        }
+        public static string sumOfDivided(int[] lst) {
+                int val = lst.OrderBy(c => c).Last();
+                if(val<0) val =-lst.OrderBy(c => c).First();
+               Dictionary<int,int> prim = todosOsPrimos(val);
+                HashSet<int> toch=new HashSet<int>();
+                foreach (var l in lst)
+                {
+                    prim =
+                    prim.ToDictionary(k => k.Key,k => {
+                        if(l%k.Key==0){
+                            toch.Add(k.Key);
+                            return k.Value+l/k.Key;
+                        }
+                        return k.Value;
+                    });
+                } 
+
+                return string.Join("",prim.Where(k =>toch.Contains(k.Key)).OrderBy(k=>k.Key).Select(k => $"({k.Key} {k.Key*k.Value})")); 
+           
         }
         static void Main(string[] args)
         {
@@ -380,7 +393,8 @@ namespace codeWar
             // {
             //     ehPrimo(i);
             // }
-           System.Console.WriteLine(sumOfDivided(new int[] {12, 15}));;
+        //    System.Console.WriteLine(sumOfDivided(new int[] {107, 158, 204, 100, 118, 123, 126, 110, 116, 100}));
+            System.Console.WriteLine(sumOfDivided(new int[]{-29804, -4209, -28265, -72769, -31744}));
         }
     }
 }
