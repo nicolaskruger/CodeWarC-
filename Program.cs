@@ -347,9 +347,40 @@ namespace codeWar
           }
           return string.Join(".",list);
         }
+        public static bool ehPrimo(int n){
+            if(n==2)return true;
+            var arr= Enumerable.Range(2,(n-2)).Where(s =>((n%s)==0)).ToArray();//.Length==0;
+            return arr.Length==0;
+        }
+        public static Dictionary<int,int> todosOsPrimos(int n){
+            Dictionary<int,int> dic = new Dictionary<int, int>();
+            foreach (var item in Enumerable.Range(2,n).Where(s =>ehPrimo(s)))
+            {
+                dic[item]=0;
+            } 
+            return dic;
+        }
+        public static string sumOfDivided(int[] lst) {
+            Dictionary<int,int> prim = todosOsPrimos(lst.OrderBy(c => c).Last());
+            foreach (var l in lst)
+            {
+                prim =
+                prim.ToDictionary(k => k.Key,k => {
+                    if(l%k.Key==0&&l!=k.Key){
+                        return k.Value+l/k.Key;
+                    }
+                    return k.Value;
+                });
+            } 
+            return string.Join("",prim.Where(k =>k.Value!=0).OrderBy(k=>k.Key).Select(k => $"({k.Key} {k.Key*k.Value})"));
+        }
         static void Main(string[] args)
         {
-           System.Console.WriteLine(UInt32ToIP(2154959208));
+            // for (int i = 2; i < 10; i++)
+            // {
+            //     ehPrimo(i);
+            // }
+           System.Console.WriteLine(sumOfDivided(new int[] {12, 15}));;
         }
     }
 }
