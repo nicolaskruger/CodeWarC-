@@ -387,6 +387,72 @@ namespace codeWar
                 return string.Join("",prim.Where(k =>toch.Contains(k.Key)).OrderBy(k=>k.Key).Select(k => $"({k.Key} {k.Key*k.Value})")); 
            
         }
+        public delegate void func(string str,string val);
+        public static int pos=0;
+        public static Dictionary<string,int> regS=new Dictionary<string, int>();
+        public static Dictionary<string,func> oper= new Dictionary<string, func>(){
+            {"mov",mov},
+            {"inc",inc},
+            {"dec",dec},
+            {"jnz",jnz}
+        };
+        public static void mov(string str,string val){
+            if(regS.ContainsKey(val)){
+                regS[str]=regS[val];
+            }else{
+                regS[str]=int.Parse(val);
+            }
+        }
+        public static void inc(string str,string val){
+            if(regS.ContainsKey(str))
+                regS[str]+=1;
+            else
+                regS[str]=1;
+        }
+        public static void dec(string str,string val){
+            if(regS.ContainsKey(str))
+                regS[str]-=1;
+            else
+                regS[str]=-1;
+        }
+        public static void jnz(string str,string val){
+            int v = int.Parse(val);
+            if(! regS.ContainsKey(str)) return;
+            if(regS.ContainsKey(val)){
+                if(regS[str]!=0)pos+=regS[val]-1;
+            }else{
+                if(regS[str]!=0)pos+=v-1;
+            }
+            
+        }
+        
+        public static Dictionary<string, int> Interpret(string[] program)
+        {
+            regS.Clear();
+            pos=0;
+           List<string[]> memoria = program.Select(
+               s =>{
+                   string[] ss = s.Split(" ");
+                   try
+                   {
+                       return new string[]{
+                           ss[0],ss[1],ss[2]
+                       };
+                   }
+                   catch (System.Exception)
+                   {
+                       return new string[]{
+                           ss[0],ss[1],"0"
+                       };
+                   }
+               }
+           ).ToList();
+           while(pos<memoria.Count){
+               oper[memoria[pos][0]](memoria[pos][1],memoria[pos][2]);
+               pos++;
+           }
+           return regS;
+        }
         static void Main(string[] args)
         {
             // for (int i = 2; i < 10; i++)
@@ -394,7 +460,8 @@ namespace codeWar
             //     ehPrimo(i);
             // }
         //    System.Console.WriteLine(sumOfDivided(new int[] {107, 158, 204, 100, 118, 123, 126, 110, 116, 100}));
-            System.Console.WriteLine(sumOfDivided(new int[]{-29804, -4209, -28265, -72769, -31744}));
+            // Interpret(new[] {"mov a 5", "inc a", "dec a", "dec a", "jnz a -1", "inc a"}).print();
+            Interpret(new[] {"mov a -10", "mov b a", "inc a", "dec b", "jnz a -2"}).print();
         }
     }
 }
