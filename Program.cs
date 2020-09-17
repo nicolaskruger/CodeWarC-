@@ -416,14 +416,10 @@ namespace codeWar
                 regS[str]=-1;
         }
         public static void jnz(string str,string val){
-            int v = int.Parse(val);
-            if(! regS.ContainsKey(str)) return;
-            if(regS.ContainsKey(val)){
-                if(regS[str]!=0)pos+=regS[val]-1;
-            }else{
-                if(regS[str]!=0)pos+=v-1;
-            }
-            
+            int strV = regS.ContainsKey(str)?regS[str]:int.Parse(str);
+            int valV = regS.ContainsKey(val)?regS[val]:int.Parse(val);
+            if(strV==0) return;
+            pos +=valV-1;
         }
         
         public static Dictionary<string, int> Interpret(string[] program)
