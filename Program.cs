@@ -449,6 +449,42 @@ namespace codeWar
            }
            return regS;
         }
+        public static bool validWord(string str){
+            if(str=="")return false;
+            bool b =true;
+            while(b){
+                int index = str.IndexOf('\'');
+                if(index==-1)return true;
+                try
+                {
+                    char a =str[index-1];
+                    char c =str[index+1]; 
+                    if((str[index-1]>='a'&&str[index-1]<='z')||
+                        (str[index+1]>='a'&&str[index+1]<='z')){
+
+                    }else{
+                        return false;
+                    }
+                    str =str.Substring(index+1);
+                }
+                catch (System.Exception)
+                {
+                    
+                    return false;
+                }
+            }
+            return true;
+        }
+        public static List<string> Top3(string s)
+        {
+            return string.Join("", s.ToLower().Select((c) =>{
+                if((c>='a'&&c<='z')||c=='\''){
+                    return c;
+                }
+                return ' ';
+            })
+            ).Split(" ").Where(c=>validWord(c)).GroupBy(c =>c).ToDictionary(x => x.First(),x =>x.Count()).OrderByDescending(x => x.Value).Take(3).Select(x=>x.Key).ToList();
+        }
         static void Main(string[] args)
         {
             // for (int i = 2; i < 10; i++)
@@ -457,7 +493,7 @@ namespace codeWar
             // }
         //    System.Console.WriteLine(sumOfDivided(new int[] {107, 158, 204, 100, 118, 123, 126, 110, 116, 100}));
             // Interpret(new[] {"mov a 5", "inc a", "dec a", "dec a", "jnz a -1", "inc a"}).print();
-            Interpret(new[] {"mov a -10", "mov b a", "inc a", "dec b", "jnz a -2"}).print();
+            Top3("  //wont won't won't ").print();
         }
     }
 }
