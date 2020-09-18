@@ -450,30 +450,13 @@ namespace codeWar
            return regS;
         }
         public static bool validWord(string str){
-            if(str=="")return false;
-            bool b =true;
-            while(b){
-                int index = str.IndexOf('\'');
-                if(index==-1)return true;
-                try
-                {
-                    char a =str[index-1];
-                    char c =str[index+1]; 
-                    if((str[index-1]>='a'&&str[index-1]<='z')||
-                        (str[index+1]>='a'&&str[index+1]<='z')){
-
-                    }else{
-                        return false;
-                    }
-                    str =str.Substring(index+1);
-                }
-                catch (System.Exception)
-                {
-                    
-                    return false;
-                }
-            }
-            return true;
+            if(str=="") return false;
+            return str.Select(s=>{
+                if(s>='a'&&s<='z')
+                    return 1;
+                return 0;
+            }).GroupBy(s => 1).Select(s=>s.Sum()).First()>0;
+            
         }
         public static List<string> Top3(string s)
         {
