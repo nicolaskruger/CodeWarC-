@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 namespace codeWar
 {
     static class Program
@@ -468,6 +469,26 @@ namespace codeWar
             })
             ).Split(" ").Where(c=>validWord(c)).GroupBy(c =>c).ToDictionary(x => x.First(),x =>x.Count()).OrderByDescending(x => x.Value).Take(3).Select(x=>x.Key).ToList();
         }
+        public static string formatDuration(int seconds){
+          if(seconds==0) return "now";
+          TimeSpan t= TimeSpan.FromSeconds(seconds);
+          int year=t.Days/360;
+          int days=-year*360+t.Days;
+          int hour = t.Hours;
+          int min = t.Minutes;
+          int sec = t.Seconds;
+          List<string> str = new List<string>();
+          int skip=0;
+          if(year>0) str.Add($"{year} year{(year==1?"":"s")}");
+          if(days>0) str.Add($"{days} day{(days==1?"":"s")}");
+          if(hour>0) str.Add($"{hour} hour{(hour==1?"":"s")}");
+          if(min>0) str.Add($"{min} minute{(min==1?"":"s")}");
+          if(sec>0) str.Add($"{sec} second{(sec==1?"":"s")}");
+          if(str.Count==1) return str.First();
+          string p1= string.Join(", ",str.Take(str.Count-1));
+          string p2= str.Last();
+          return string.Join(" and ",new string[]{p1,p2});
+        }
         static void Main(string[] args)
         {
             // for (int i = 2; i < 10; i++)
@@ -476,7 +497,7 @@ namespace codeWar
             // }
         //    System.Console.WriteLine(sumOfDivided(new int[] {107, 158, 204, 100, 118, 123, 126, 110, 116, 100}));
             // Interpret(new[] {"mov a 5", "inc a", "dec a", "dec a", "jnz a -1", "inc a"}).print();
-            Top3("  //wont won't won't ").print();
+            System.Console.WriteLine(formatDuration(15731080));
         }
     }
 }
