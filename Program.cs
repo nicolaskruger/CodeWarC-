@@ -472,8 +472,8 @@ namespace codeWar
         public static string formatDuration(int seconds){
           if(seconds==0) return "now";
           TimeSpan t= TimeSpan.FromSeconds(seconds);
-          int year=t.Days/360;
-          int days=-year*360+t.Days;
+          int year=t.Days/365;
+          int days=-year*365+t.Days;
           int hour = t.Hours;
           int min = t.Minutes;
           int sec = t.Seconds;
