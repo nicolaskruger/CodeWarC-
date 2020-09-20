@@ -582,25 +582,58 @@ namespace codeWar
                 string w = win(x,y);
                 if(w!="")return w;
             }
-            tabuleiro.printTab();
+            //tabuleiro.printTab();
             return "Draw";
         // retrun "Red" or "Yellow" or "Draw"
+        }
+        public struct Val
+        {
+            public Val(char a,char b){
+                this.a=a;
+                this.b=b;
+            }
+            public char a { get; set; }
+            public char b { get; set; }
+        }
+        public static void add(this List<Val> val,string a,string b){
+            if(a.Length>b.Length){
+                b=new string('0',a.Length-b.Length)+b;
+            }
+            else{
+                a=new string('0',b.Length-a.Length)+a;
+            }
+            for (int i = 0; i < a.Length; i++)
+            {
+                val.Add(new Val(a[i],b[i]));
+            }
+        }
+        public static string Add(string a, string b)
+        {
+           List<Val> lis = new List<Val>();
+           lis.add(a,b);
+           lis.Reverse();
+           int n =0;
+           string str=
+           string.Join("",
+           lis.Select(c =>{
+               int num = int.Parse(c.a.ToString())+int.Parse(c.b.ToString())+n;
+                if(num/10==1){
+                    n=1;
+                    return num.ToString()[1];
+                } 
+                else {
+                    n=0;
+                    return num.ToString()[0];
+                }
+            
+           }));
+           if(n==1)str+="1";
+           return string.Join("",str.Reverse()) ;
         }
         static void Main(string[] args)
         {
             
-            List<string> myList = new List<string>()
-            {
-                "A_Red",
-                "B_Yellow",
-                "A_Red",
-                "B_Yellow",
-                "A_Red",
-                "B_Yellow",
-                "G_Red",
-                "B_Yellow"
-            };
-            System.Console.WriteLine(WhoIsWinner(myList));
+            System.Console.WriteLine(Add("123", "321"));
         }
     }
 }
