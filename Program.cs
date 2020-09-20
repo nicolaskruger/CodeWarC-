@@ -609,26 +609,7 @@ namespace codeWar
         }
         public static string Add(string a, string b)
         {
-           List<Val> lis = new List<Val>();
-           lis.add(a,b);
-           lis.Reverse();
-           int n =0;
-           string str=
-           string.Join("",
-           lis.Select(c =>{
-               int num = int.Parse(c.a.ToString())+int.Parse(c.b.ToString())+n;
-                if(num/10==1){
-                    n=1;
-                    return num.ToString()[1];
-                } 
-                else {
-                    n=0;
-                    return num.ToString()[0];
-                }
-            
-           }));
-           if(n==1)str+="1";
-           return string.Join("",str.Reverse()) ;
+           return (BigInteger.Parse(a) + BigInteger.Parse(b)).ToString();
         }
         static void Main(string[] args)
         {
