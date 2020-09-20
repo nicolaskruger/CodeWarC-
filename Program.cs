@@ -522,10 +522,11 @@ namespace codeWar
                 tabuleiro.Add(new List<int>(linha));
             }
         }
-        static void addPessa(string pos,string peca){
+        static int addPessa(string pos,string peca){
             int p = getPoss(pos);
             tabuleiro[curColum[p]][p]=peace[peca];
             curColum[p]--;
+            return curColum[p]+1;
         }
         static bool four(int n){
             return n==4||n==-4;
@@ -533,82 +534,71 @@ namespace codeWar
         static string decode(int n){
             return n==4?"Yellow":"Red";
         }
-        static string winner(){
-            
-            int offset=3;
-            for (int i = 0; i < tabuleiro.Count; i++)
+        static int Is(int x, int y, int val, int dx,int dy){
+            try
             {
-                for (int j = 0; j < tabuleiro[i].Count; j++)
-                {
-                    int linha = tabuleiro.Skip(i).First().Skip(j).Take(4).Sum();
-                    int coluna = tabuleiro.Select(s=>s[j]).Skip(i).Take(4).Sum();
-                    int jj=0;
-                    int diagDown = tabuleiro.Skip(i).Take(4).Select(s => {
-                            try
-                            {
-                                return s[j+jj++];    
-                            }
-                            catch (System.Exception)
-                            {
-
-                                return 0;
-                            } 
-                        }).Sum();
-                    jj=3;
-                    int diadUpp = tabuleiro.Skip(i).Take(4).Select( s => {
-                            try
-                            {
-                                return s[j+jj--];    
-                            }
-                            catch (System.Exception)
-                            {
-
-                                return 0;
-                            } 
-                        }).Sum();
-                    int[] val = new int[]{
-                        linha,coluna,diadUpp,diagDown
-                    };
-                    foreach (var v in val)
-                    {
-                        if(four(v)) return decode(v);
-                    }
+                if(tabuleiro[y][x]==val){
+                    return 1+Is(x+dx,y+dy,val,dx,dy);
                 }
+                return 0;
             }
-
-            return "Draw";
+            catch (System.Exception)
+            {
+                
+                return 0;
+            }
         }
+        static string win(int x, int y){
+            int val= tabuleiro[y][x];
+            int up =Is(x,y,val,-1,0)-1;
+            int donw =Is(x,y,val,1,0)-1;
+            int rigth =Is(x,y,val,0,1)-1;
+            int left =Is(x,y,val,0,-1)-1;
+            int upR =Is(x,y,val,-1,1)-1;
+            int donwR =Is(x,y,val,1,1)-1;
+            int upL =Is(x,y,val,-1,-1)-1;
+            int downL =Is(x,y,val,1,-1)-1;
+            int xx = left+rigth+1;
+            int yy = up+donw+1;
+            int dr = upL+donwR+1;
+            int ur = upR+downL+1;
+            int[] lis = new int[]{xx,yy,dr,ur};
+            foreach (var l in lis)
+            {
+                if(l>=4) return val==1?"Yellow":"Red";
+            }
+            return "";
+        }
+        
+
         public static string WhoIsWinner(List<string> piecesPositionList)
         {
             resetTab();
             foreach (var piece in piecesPositionList)
             {
                 string[] val = piece.Split("_");
-                addPessa(val[0],val[1]);
+                int x =getPoss(val[0]);
+                int y= addPessa(val[0],val[1]);
+                string w = win(x,y);
+                if(w!="")return w;
             }
             tabuleiro.printTab();
-            return winner();
+            return "Draw";
         // retrun "Red" or "Yellow" or "Draw"
         }
         static void Main(string[] args)
         {
+            
             List<string> myList = new List<string>()
             {
-                "A_Yellow",
-                "B_Red",
+                "A_Red",
                 "B_Yellow",
-                "C_Red",
-                "G_Yellow",
-                "C_Red",
-                "C_Yellow",
-                "D_Red",
-                "G_Yellow",
-                "D_Red",
-                "G_Yellow",
-                "D_Red",
-                "F_Yellow",
-                "E_Red",
-                "D_Yellow"
+                "A_Red",
+                "B_Yellow",
+                "A_Red",
+                "B_Yellow",
+                "G_Red",
+                "B_Yellow"
             };
             System.Console.WriteLine(WhoIsWinner(myList));
         }
