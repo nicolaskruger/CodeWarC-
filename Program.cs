@@ -489,15 +489,128 @@ namespace codeWar
           string p2= str.Last();
           return string.Join(" and ",new string[]{p1,p2});
         }
+        static void printTab(this List<List<int>> tab){
+            foreach (var ta in tab)
+            {
+                foreach (var t in ta)
+                {
+                    System.Console.Write($"{(t==-1?2:t)} ");
+                }
+                System.Console.WriteLine();
+            }
+        }
+        static List<int> linha = new List<int>(){
+            0,0,0,0,0,0,0
+        };
+        static List<List<int>> tabuleiro = new List<List<int>>();
+        static int [] refColum = new int[]{
+            5,5,5,5,5,5,5
+        };
+        static int[] curColum = refColum.Clone() as int[];
+        static Dictionary<string,int> peace = new Dictionary<string, int>(){
+            {"Red",-1},
+            {"Yellow",1},
+        };
+        static int getPoss(string pos){
+            return (int)(pos[0]-'A');
+        }
+        static void resetTab(){
+            curColum = refColum.Clone() as int[];
+            tabuleiro.Clear();
+            for (int i = 0; i < 6; i++)
+            {
+                tabuleiro.Add(new List<int>(linha));
+            }
+        }
+        static void addPessa(string pos,string peca){
+            int p = getPoss(pos);
+            tabuleiro[curColum[p]][p]=peace[peca];
+            curColum[p]--;
+        }
+        static bool four(int n){
+            return n==4||n==-4;
+        }
+        static string decode(int n){
+            return n==4?"Yellow":"Red";
+        }
+        static string winner(){
+            
+            int offset=3;
+            for (int i = 0; i < tabuleiro.Count; i++)
+            {
+                for (int j = 0; j < tabuleiro[i].Count; j++)
+                {
+                    int linha = tabuleiro.Skip(i).First().Skip(j).Take(4).Sum();
+                    int coluna = tabuleiro.Select(s=>s[j]).Skip(i).Take(4).Sum();
+                    int jj=0;
+                    int diagDown = tabuleiro.Skip(i).Take(4).Select(s => {
+                            try
+                            {
+                                return s[j+jj++];    
+                            }
+                            catch (System.Exception)
+                            {
+
+                                return 0;
+                            } 
+                        }).Sum();
+                    jj=3;
+                    int diadUpp = tabuleiro.Skip(i).Take(4).Select( s => {
+                            try
+                            {
+                                return s[j+jj--];    
+                            }
+                            catch (System.Exception)
+                            {
+
+                                return 0;
+                            } 
+                        }).Sum();
+                    int[] val = new int[]{
+                        linha,coluna,diadUpp,diagDown
+                    };
+                    foreach (var v in val)
+                    {
+                        if(four(v)) return decode(v);
+                    }
+                }
+            }
+
+            return "Draw";
+        }
+        public static string WhoIsWinner(List<string> piecesPositionList)
+        {
+            resetTab();
+            foreach (var piece in piecesPositionList)
+            {
+                string[] val = piece.Split("_");
+                addPessa(val[0],val[1]);
+            }
+            tabuleiro.printTab();
+            return winner();
+        // retrun "Red" or "Yellow" or "Draw"
+        }
         static void Main(string[] args)
         {
-            // for (int i = 2; i < 10; i++)
-            // {
-            //     ehPrimo(i);
-            // }
-        //    System.Console.WriteLine(sumOfDivided(new int[] {107, 158, 204, 100, 118, 123, 126, 110, 116, 100}));
-            // Interpret(new[] {"mov a 5", "inc a", "dec a", "dec a", "jnz a -1", "inc a"}).print();
-            System.Console.WriteLine(formatDuration(15731080));
+            List<string> myList = new List<string>()
+            {
+                "A_Yellow",
+                "B_Red",
+                "B_Yellow",
+                "C_Red",
+                "G_Yellow",
+                "C_Red",
+                "C_Yellow",
+                "D_Red",
+                "G_Yellow",
+                "D_Red",
+                "G_Yellow",
+                "D_Red",
+                "F_Yellow",
+                "E_Red",
+                "D_Yellow"
+            };
+            System.Console.WriteLine(WhoIsWinner(myList));
         }
     }
 }
