@@ -612,10 +612,37 @@ namespace codeWar
         {
            return (BigInteger.Parse(a) + BigInteger.Parse(b)).ToString();
         }
+        public static long NextBiggerNumber(long n)
+        {
+           var N = n.ToString();
+            for (int i = N.Length-2; i >=0; i--)
+            {
+                try
+                {
+                    string sub = N.Substring(i+1);
+                    char d = sub.Where(c => c>N[i]).OrderBy(c => c).First();
+                    int index = sub.IndexOf(d)+1+i;
+                    char [] ch =N.ToArray();
+                    ch.swap(i,index);
+                    if(ch[0]=='0') throw new Exception();
+                    List<char> li1 = ch.Take(i+1).ToList();
+                    List<char> li2 = ch.Skip(i+1).OrderBy(c=>c).ToList();
+                    li1= li1.Concat(li2).ToList();
+                    return long.Parse(string.Join("",li1));
+                }
+                catch (System.Exception)
+                {
+                    
+                }
+                
+            }
+            
+            return -1;
+        }
         static void Main(string[] args)
         {
             
-            System.Console.WriteLine(Add("123", "321"));
+            System.Console.WriteLine(NextBiggerNumber(59884848459853));
         }
     }
 }
