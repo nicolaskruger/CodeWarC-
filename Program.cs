@@ -24,8 +24,10 @@ namespace codeWar
         {
             string [] st = new string[n];
             int L = s.Length;
-            int len = s.Length/(2*n-2);
-            int res = s.Length%(2*n-2);
+            int c = (2*n-2);
+            int len = s.Length/c;
+            int res = s.Length%c;
+            int lw = (res-n)*2+1;
             int i=0;
             int di=1;
             string store="";
@@ -36,8 +38,10 @@ namespace codeWar
                     res--;
                     st[i]=s.Substring(0,tam);
                 }else{
-                    tam=len*2+(res>0?1:0);
+                    int ofset =res<=lw?1:0;
+                    tam=len*2+(res>0?1:0)+ofset;
                     res--;
+                    res-=ofset;
                     st[i]=s.Substring(0,tam);
                 }
                 s=s.Substring(tam);
