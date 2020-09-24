@@ -11,7 +11,7 @@ namespace codeWar
         };
         public static int GetVowelCount(string str)
         {
-            return str.Where(s => voewl.Contains(s)).Count();
+            return str.Count(i => "aeiou".Contains(i));
         }
         static void Main(string[] args)
         {
