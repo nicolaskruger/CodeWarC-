@@ -9,34 +9,24 @@ namespace codeWar
 {
     static class Program
     {        
-        static char div = '/';
-        static char mul = '*';
-        static char sum = '+';
-        static char sub = '-';
-        static char[] op = new char[]{
-            div,mul,sum,sub
-        };
-        static Regex divid = new Regex(@"\-?\d{0,1000}\.?\d{0,1000}[/]\-?\d{0,1000}\.?\d{0,1000}");
-        static Regex mult = new Regex(@"\-?\d{0,1000}\.?\d{0,1000}[*]\-?\d{0,1000}\.?\d{0,1000}");
-        static Regex suma = new Regex(@"\d{0,1000}\.?\d{0,1000}[+]\d{0,1000}\.?\d{0,1000}");
-        static Regex subt = new Regex(@"\d{0,1000}\.?\d{0,1000}[-]\d{0,1000}\.?\d{0,1000}");
-        
-        static Regex[] oper = new Regex[]{
-            divid,mult,suma,subt
-        };
+       
+
+        static string divMult = @"\-?\d+\.?\d*([/*])\-?\d*\.?\d*";
+        static string sumSub = @"\-?\d+\.?\d*";
+        static Regex DivMult = new Regex(divMult);
+        static Regex SumSub = new Regex(sumSub);
         public delegate double Oper(double a, double b);
-        static Oper[] operation = new Oper[]{
-            (a,b) => (a/b),
-            (a,b) => (a*b),
-            (a,b) => (a+b),
-            (a,b) => (a-b),
+        static Dictionary<string,Oper> operation = new Dictionary<string,Oper>(){
+            {"/",(a,b) => (a/b)},
+            {"*",(a,b) => (a*b)},
+            {"+",(a,b) => (a+b)},
+            {"-",(a,b) => (a-b)},
         };
         public static Regex parent = new Regex(@"\([^\(|^\)]{0,1000000000}\)");
         public static string cleanString(string str){
             return string.Join("",str.Where(s => s=='('||s==')'||(s>='1'&&s<='9') || s=='/'||s=='*'||s=='+'||s=='-').ToArray());
         }
         public static double solveSimple(string str){
-            //System.Console.WriteLine(double.Parse(str));
             try
             {
                 double valor= double.Parse(str);
@@ -44,20 +34,26 @@ namespace codeWar
             }
             catch (System.Exception)
             {
-                for (int i = 0; i < op.Length; i++)
-                {
-                   MatchCollection matches = oper[i].Matches(str);
-                    if(matches.Count>0){
-                        var math= matches[0];
-                        string[] st = math.Value.Split(op[i]).ToArray();
-                        double val = operation[i](double.Parse(st[0]),double.Parse(st[1]));
-                        str= str.Remove(math.Index,math.Value.Length);
-                        str= str.Insert(math.Index,val.ToString());
-                        return solveSimple(str);  
-                    } 
+              
+                MatchCollection matches = DivMult.Matches(str);
+                if(matches.Count>0){
+                    var math= matches[0];
+                    string gOper = math.Groups[1].Value;
+                    string[] st = math.Value.Split(gOper).ToArray();
+                    double val = operation[gOper](double.Parse(st[0]),double.Parse(st[1]));
+                    str= str.Remove(math.Index,math.Value.Length);
+                    str= str.Insert(math.Index,val.ToString());
+                    return solveSimple(str);
                 }
+                matches = SumSub.Matches(str);
+                double reduce = 0;
+                foreach (Match math in matches)
+                {
+                    string valor = math.Value;
+                    reduce += double.Parse(valor);
+                }
+                return reduce;
             }
-            return 0;
         }
         public static double solveParentese(string str){
             MatchCollection matches = parent.Matches(str);
@@ -72,7 +68,6 @@ namespace codeWar
             }else{
                 return solveSimple(str);
             }
-            return 0;
         }
         static public double Evaluate(string expression)
         {
@@ -85,7 +80,7 @@ namespace codeWar
             //int n;
             CultureInfo cult = new CultureInfo("en-US");
             CultureInfo.DefaultThreadCurrentCulture =cult;
-            System.Console.WriteLine(Evaluate("2 / (2 + 3) * 4 - 6"));
+            System.Console.WriteLine(Evaluate("2/2*2"));
         }
     }
 }
