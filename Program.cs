@@ -22,9 +22,13 @@ namespace codeWar
             {"+",(a,b) => (a+b)},
             {"-",(a,b) => (a-b)},
         };
-        public static Regex parent = new Regex(@"\([^\(|^\)]{0,1000000000}\)");
+        public static Regex parent = new Regex(@"\([^\(|^\)]*\)");
         public static string cleanString(string str){
-            return string.Join("",str.Where(s => s=='('||s==')'||(s>='1'&&s<='9') || s=='/'||s=='*'||s=='+'||s=='-').ToArray());
+            str= string.Join("",str.Where(s => s=='('||s==')'||(s>='0'&&s<='9') || s=='/'||s=='*'||s=='+'||s=='-'||s=='.').ToArray());
+            str = str.Replace("--","+");
+            str = str.Replace("/+","/");
+            str = str.Replace("*+","*");
+            return str;
         }
         public static double solveSimple(string str){
             try
@@ -56,6 +60,7 @@ namespace codeWar
             }
         }
         public static double solveParentese(string str){
+            str =cleanString(str);
             MatchCollection matches = parent.Matches(str);
             if(matches.Count>0){
                 var math = matches[0];
@@ -71,16 +76,14 @@ namespace codeWar
         }
         static public double Evaluate(string expression)
         {
-            expression = cleanString(expression);
-            return solveParentese(expression);
-            
+            return solveParentese(expression);  
         }
         static void Main(string[] args)
         {
             //int n;
             CultureInfo cult = new CultureInfo("en-US");
             CultureInfo.DefaultThreadCurrentCulture =cult;
-            System.Console.WriteLine(Evaluate("2/2*2"));
+            System.Console.WriteLine(Evaluate("2 / (2 + 3) * 4.33 - -6"));
         }
     }
 }
