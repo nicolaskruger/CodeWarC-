@@ -6,11 +6,7 @@ namespace codeWar
     {
         public static string FindNeedle(object[] haystack)
         {
-            for (int i = 0; i < haystack.Length; i++)
-            {
-                if(haystack[i] is string && haystack[i]=="needle") return $"found the needle at position {i}";
-            }
-            return "";
+            return "found the needle at position " + Array.IndexOf(haystack,"needle");
         }
         static void Main(string[] args)
         {
