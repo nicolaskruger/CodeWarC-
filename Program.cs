@@ -11,19 +11,20 @@ namespace codeWar
             string.Join("",
             string.Join("",input.Split("WUB").Select(s=>{
                return s+" ";
-           })).Trim().Split("").Select(s =>{
-               if(space && s==" "){
+           })).Trim().Where(s =>{
+               if(space && s==' '){
                    space = false;
-                   return " ";
+                   return true;
                }
+               else if(s==' ' ) return false;
                space = true;
-               return s;
+               return true;
            }));
            
         }
         static void Main(string[] args)
         {
-            string str =SongDecoder("AWUBBWUBCWUBD");
+            string str =SongDecoder("RWUBWUBWUBLWUB");
         }
     }
 }
